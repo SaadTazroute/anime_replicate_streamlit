@@ -152,3 +152,41 @@ def share_button(output):
         """
     )
     # st.image(url, width=400)
+
+
+def initialize_template():
+    with open('style.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+    components.html(
+        '''
+        <style>
+          html {
+            background-color: #F7F9FC;
+          }
+          .stApp {
+            background-color: #F7F9FC;
+            border-radius: 20px;
+            font-family: 'Sawarabi Gothic', sans-serif;
+            font-size: 16px;
+            padding: 10px;
+          }
+          h1 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F7F9FC;
+            text-align: center;
+            font-family: 'Sawarabi Gothic', sans-serif;
+          }
+          img {
+            width: 300px;
+            border-radius: 10px;
+          }
+          .stText {
+            font-family: 'Sawarabi Gothic', sans-serif;
+            font-size: 16px;
+            padding-top: 10px;
+          }
+        </style>
+        '''
+    )
