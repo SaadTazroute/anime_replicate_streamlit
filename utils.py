@@ -41,27 +41,22 @@ logging.basicConfig(format="\n%(asctime)s\n%(message)s", level=logging.INFO, for
 #             logging.info(f"Tweet: {prompt}\nImage prompt: {processed_prompt}")
 
 
-def generate_text(version,inputs,placeholder):
+def generate_img(version, inputs, placeholder):
+    st.session_state.text_error = ""
+    # if len(inputs["prompt"])<2:
+    #     st.session_state.text_error = "Please enter a correct description ! "
+    # st.session_state.text_error = False
+    # if st.session_state.text_error:
+    #     print("mok")
+    #     st.error(st.session_state.text_error)
+
+    col1, col2,col3,col4 = st.columns(4)
+    output = version.predict(**inputs)
 
 
-    with st.spinner("Please wait while your image is being generated..."):
-        # if len(inputs["prompt"])<2:
-        #     st.session_state.text_error = "Please enter a correct description ! "
-        # st.session_state.text_error = False
-        # if st.session_state.text_error:
-        #     print("mok")
-        #     st.error(st.session_state.text_error)
-        col1, col2,col3,col4 = st.columns(4)
-        print(inputs)
-        output = version.predict(**inputs)
-        print(output)
-        with col1 :
-            ## image saving :
-            res = requests.get(output[0])
-            img_data = res.content
+    ## image saving :
 
-            st.image(output, caption='Generated image', use_column_width='auto')
-
+    return output
 
 
 def generate_text_lucky(version,inputs,placeholder):
@@ -81,8 +76,8 @@ def generate_text_lucky(version,inputs,placeholder):
 
 
 
-height = 768
-width  = 768
+height = 512
+width  = 512
 num_outputs = 1
 inputs = {
     # Input prompt
@@ -90,7 +85,7 @@ inputs = {
     'width': width,
     'height':height,
     'num_outputs': num_outputs,
-    'num_inference_steps': 20,
+    'num_inference_steps': 10,
     'guidance_scale': 7,
     'scheduler': "DPMSolverMultistep",
     }

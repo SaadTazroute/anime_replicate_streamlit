@@ -1,5 +1,6 @@
 import gc
 
+import torch
 from PIL import Image
 
 import utils
@@ -17,6 +18,8 @@ def main() :
     logging.basicConfig(format="\n%(asctime)s\n%(message)s", level=logging.INFO, force=True)
 
     model,version = load_gan()
+    with torch.no_grad():
+        torch.cuda.empty_cache()
     ##########################"
     st.set_page_config(page_title="Anime_Gan", page_icon="🤖")
     st.write(
@@ -34,30 +37,62 @@ def main() :
 
     inputs = utils.inputs
     print(inputs)
-    inputs['prompt'] = st.text_input('Enter Text',placeholder="write a description")
 
-    col1, col2 = st.columns(2)
-    image_spin_holder = st.empty()
+    col1,col2 = st.columns(2)
+    with col1 :
+        pass
 
-    #
-    # with image_spin_holder:
-    #     with st.spinner("Please wait while your Tweet is being generated..."):
-    with col1:
-        st.session_state.prompt =  st.button(
-            label="Generate text",
-            type="primary",
-            on_click=utils.generate_text,
-            args=(version, inputs, image_spin_holder)
-        )
-    with col2:
+    with col2 :
         st.session_state.feeling_lucky = st.button(
-            label="Feeling lucky",
+            label="Feeling Lucky",
             type="secondary",
             on_click=utils.generate_text_lucky,
-            args=(version, inputs,image_spin_holder),
+            args=(version, inputs, st.empty()),
         )
+
+
+
+    # inputs['prompt'] = st.text_input('Enter Text',placeholder="write a description")
+
+    col1, col2 = st.columns(2)
+
+    image_spin_holder = st.empty()
+    #
+
+    inputs['prompt'] = st.text_input('Enter Text', placeholder="write a description")
+
+    print("hahahahahhahah", inputs)
+
+    print("hahahahahhahah", inputs)
+    print('zabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+    print("zabbbb", inputs)
+
+    print('zabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+    if st.button(label="Generate text",
+                    type="secondary"):
+        with image_spin_holder:
+            with st.spinner("Please wait while your Tweet is being generated..."):
+                with col2:
+                    col1,col2,col3 = st.columns(3)
+
+                    output = utils.generate_img(version, inputs, image_spin_holder)
+                    with col1 :
+                        print(output)
+                        image = st.image(output, caption='Generated image1 ', use_column_width='auto')
+
+                        res = requests.get(output[0])
+
+                        image1 = res.content
+                        print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",type(image1))
+                    with col2 :
+                        image2 = st.image(output, caption='Generated image', use_column_width='auto')
+                    print(type(image2))
+    with col1:
+        pass
+
+
     gc.collect()
-#
+    #
     # if st.button("Generate"):
     #
     #     output = version.predict(**inputs)
@@ -68,10 +103,10 @@ def main() :
     #
     #     st.image(output, caption='Image from link', use_column_width=True)
     #     # st.image(img_data, caption='Image from link', use_column_width=True)
-    #
-    # if st.button('Download'):
-    #     # st.markdown("<a href=" + output[0] + " download>Download Image</a>", unsafe_allow_html=True)
-    #     st.markdown('<a href="' + model.to_base64(output) + '" download>Download Image</a>', unsafe_allow_html=True)
+
+    if st.button('Download'):
+        # st.markdown("<a href=" + output[0] + " download>Download Image</a>", unsafe_allow_html=True)
+        st.markdown('<a href="' + model.to_base64(output) + '" download>Download Image</a>', unsafe_allow_html=True)
         # st.markdown("<a href=" + image_url + " download>Download Image</a>", unsafe_allow_html=True)
 
         # # Add a share button
