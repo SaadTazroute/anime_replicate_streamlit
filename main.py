@@ -1,5 +1,7 @@
 import gc
+from io import BytesIO
 
+import numpy as np
 import torch
 from PIL import Image
 
@@ -41,69 +43,42 @@ def main() :
     col1,col2 = st.columns(2)
     with col1 :
         pass
+    image_spin_holder = st.empty()
 
-    with col2 :
-        st.session_state.feeling_lucky = st.button(
-            label="Feeling Lucky",
-            type="secondary",
-            on_click=utils.generate_text_lucky,
-            args=(version, inputs, st.empty()),
-        )
+    if st.button(label="Feeling Lucky",
+                    type="secondary"):
+        with image_spin_holder:
+            with st.spinner("Please wait while your Tweet is being generated..."):
+                with col2:
 
+                    output = utils.generate_text_lucky(version, inputs, st.empty())
+                    img = utils.add_images(output)
+        utils.share_button(output)
 
 
     # inputs['prompt'] = st.text_input('Enter Text',placeholder="write a description")
 
     col1, col2 = st.columns(2)
 
-    image_spin_holder = st.empty()
     #
 
     inputs['prompt'] = st.text_input('Enter Text', placeholder="write a description")
 
-    print("hahahahahhahah", inputs)
-
-    print("hahahahahhahah", inputs)
-    print('zabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
-    print("zabbbb", inputs)
-
-    print('zabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
     if st.button(label="Generate text",
                     type="secondary"):
         with image_spin_holder:
             with st.spinner("Please wait while your Tweet is being generated..."):
                 with col2:
-                    col1,col2,col3 = st.columns(3)
 
                     output = utils.generate_img(version, inputs, image_spin_holder)
-                    with col1 :
-                        print(output)
-                        image = st.image(output, caption='Generated image1 ', use_column_width='auto')
+                    img = utils.add_images(output)
+        utils.share_button(output)
 
-                        res = requests.get(output[0])
-
-                        image1 = res.content
-                        print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",type(image1))
-                    with col2 :
-                        image2 = st.image(output, caption='Generated image', use_column_width='auto')
-                    print(type(image2))
     with col1:
         pass
 
 
     gc.collect()
-    #
-    # if st.button("Generate"):
-    #
-    #     output = version.predict(**inputs)
-    #
-    #     ## image saving :
-    #     res = requests.get(output[0])
-    #     img_data = res.content
-    #
-    #     st.image(output, caption='Image from link', use_column_width=True)
-    #     # st.image(img_data, caption='Image from link', use_column_width=True)
-
     if st.button('Download'):
         # st.markdown("<a href=" + output[0] + " download>Download Image</a>", unsafe_allow_html=True)
         st.markdown('<a href="' + model.to_base64(output) + '" download>Download Image</a>', unsafe_allow_html=True)
