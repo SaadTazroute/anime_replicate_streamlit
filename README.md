@@ -1,9 +1,10 @@
-# anime_gan_app
+# Anime styled image generation based on text input
 
+Create your new environment conda using : 
 
-Create your new environmenton conda using : conda create NAME_ENV 
+```conda env create -f environment.yml```
 
-conda activate NAME_ENV
+run the streamlit app using  :
 
+```streamlit run main.py```
 
-pip install -r requirements.txt
