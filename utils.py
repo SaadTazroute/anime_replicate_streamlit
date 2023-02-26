@@ -73,7 +73,7 @@ def generate_text_lucky(version, inputs, placeholder):
     with st.spinner("Please wait while your image is being generated..."):
         inputs["prompt"] = random.choice(list_of_prompts)
 
-        print("Random description ", inputs)
+        print("Random description ", inputs["prompt"])
         output = version.predict(**inputs)
 
         return output
@@ -125,19 +125,19 @@ def share_button(output):
     URL = output[0]
     Facebook_url = f"https://www.facebook.com/sharer/sharer.php?u={URL}"
 
-
-    components.html(
-
-
-    f"""
-    <a href="https://www.facebook.com/sharer/sharer.php?u={URL}" target="_blank">
-        <img src="https://en.m.wikipedia.org/wiki/File:Facebook_Logo_%282019%29.png" alt="Share on Facebook" />
-    </a>
-    """
-
-
-
-    )
+    #
+    # components.html(
+    #
+    #
+    # f"""
+    # <a href="https://www.facebook.com/sharer/sharer.php?u={URL}" target="_blank">
+    #     <img src="https://en.m.wikipedia.org/wiki/File:Facebook_Logo_%282019%29.png" alt="Share on Facebook" />
+    # </a>
+    # """
+    #
+    #
+    #
+    # )
     components.html(
         f"""
             <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" 

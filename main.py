@@ -24,6 +24,7 @@ def main() :
         torch.cuda.empty_cache()
     ##########################"
     st.set_page_config(page_title="Anime_Gan", page_icon="🤖")
+    utils.initialize_template()
     st.write(
         """<style>
         [data-testid="column"] {
@@ -38,7 +39,7 @@ def main() :
     st.title("Anime Generation")
 
     inputs = utils.inputs
-    print(inputs)
+    # print(inputs)
 
     col1,col2 = st.columns(2)
     with col1 :
@@ -48,7 +49,7 @@ def main() :
     if st.button(label="Feeling Lucky",
                     type="secondary"):
         with image_spin_holder:
-            with st.spinner("Please wait while your Tweet is being generated..."):
+            with st.spinner("Please wait while your image is being generated..."):
                 with col2:
 
                     output = utils.generate_text_lucky(version, inputs, st.empty())
@@ -67,29 +68,30 @@ def main() :
     if st.button(label="Generate text",
                     type="secondary"):
         with image_spin_holder:
-            with st.spinner("Please wait while your Tweet is being generated..."):
+            with st.spinner("Please wait while your image is being generated..."):
                 with col2:
-
                     output = utils.generate_img(version, inputs, image_spin_holder)
                     img = utils.add_images(output)
+
         utils.share_button(output)
 
     with col1:
         pass
 
+    import base64
 
     gc.collect()
-    if st.button('Download'):
-        # st.markdown("<a href=" + output[0] + " download>Download Image</a>", unsafe_allow_html=True)
-        st.markdown('<a href="' + model.to_base64(output) + '" download>Download Image</a>', unsafe_allow_html=True)
-        # st.markdown("<a href=" + image_url + " download>Download Image</a>", unsafe_allow_html=True)
-
-        # # Add a share button
-        # if st.button("Share on Twitter"):
-        #     st.text("Share this on Twitter")
-        #     st.text("https://twitter.com/intent/tweet?text=" + prompt)
-        # if st.button("Share"):
-        #     if st.button("Share"):
+    # if st.button('Download'):
+    #     # st.markdown("<a href=" + output[0] + " download>Download Image</a>", unsafe_allow_html=True)
+    #     st.markdown('<a href="' + base64(output) + '" download>Download Image</a>', unsafe_allow_html=True)
+    #     # st.markdown("<a href=" + image_url + " download>Download Image</a>", unsafe_allow_html=True)
+    #
+    #     # # Add a share button
+    #     # if st.button("Share on Twitter"):
+    #     #     st.text("Share this on Twitter")
+    #     #     st.text("https://twitter.com/intent/tweet?text=" + prompt)
+    #     # if st.button("Share"):
+    #     #     if st.button("Share"):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
